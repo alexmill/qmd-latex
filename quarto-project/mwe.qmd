@@ -1,0 +1,88 @@
+---
+title: "Minimal Working Example"
+author: "Your Name"
+date: "2025-11-05"
+format:
+  pdf:
+    pdf-engine: xelatex
+    pdf-engine-opts: []
+    template: template/template.tex
+    include-in-header: template/header.tex
+    documentclass: article
+    mainfont: "Libertinus Serif"
+    code-block-bg: false
+    listings: false
+---
+
+# Introduction
+
+This is a minimal working example demonstrating the Quarto → LaTeX/PDF pipeline.
+
+# Python Code Execution
+
+Here's a simple Python code chunk that creates data and a plot:
+
+```{python}
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Generate data
+x = np.linspace(0, 2*np.pi, 100)
+y = np.sin(x)
+
+# Create plot
+plt.figure(figsize=(6, 3))
+plt.plot(x, y, 'b-', linewidth=2)
+plt.title('Sine Wave')
+plt.xlabel('x')
+plt.ylabel('sin(x)')
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+# Print some output
+print(f"Maximum value: {y.max():.3f}")
+print(f"Minimum value: {y.min():.3f}")
+```
+
+# Raw LaTeX Passthrough
+
+## Method 1: Native Pandoc syntax
+
+Using the `{=latex}` raw block:
+
+```{=latex}
+\begin{center}
+\textbf{This is raw \LaTeX\ using native Pandoc syntax}
+\end{center}
+```
+
+## Example Theorem (native)
+
+We can directly write theorem environments inline in markdown using raw blocks or math:
+
+```{=latex}
+\begin{theorem}[Pythagorean Theorem]
+In a right triangle with sides $a$, $b$, and hypotenuse $c$:
+\[ a^2 + b^2 = c^2 \]
+\end{theorem}
+```
+
+# Mathematics
+
+Inline math: $E = mc^2$
+
+Display math:
+$$
+\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+$$
+
+# Conclusion
+
+This MWE demonstrates:
+
+- ✓ Python code execution with matplotlib
+- ✓ Raw LaTeX passthrough (both methods)
+- ✓ Custom theorem environments
+- ✓ Mathematical typesetting
+- ✓ Custom fonts and styling

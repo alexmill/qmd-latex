@@ -1,0 +1,107 @@
+---
+title: "Sample Spec Document"
+author: "Your Name"
+date: "today"
+toc: true
+abstract: |
+  This document demonstrates the features of the Quarto to LaTeX/PDF pipeline.
+  It includes styled theorem environments, raw LaTeX passthrough, code execution
+  for both Python and R, and custom typography.
+---
+
+# Introduction
+
+This is a sample Quarto document that serves as a test case for our custom PDF output pipeline. It showcases various features required for academic and technical writing.
+
+## Typography and Layout
+
+The document uses `Libertinus Serif` for the main text, with `Libertinus Math` for equations. The page geometry is set to have 1-inch margins, and the line spacing is slightly increased for readability.
+
+# Theorem Environments
+
+Our custom `header.tex` defines several theorem-like environments. They are numbered within sections.
+
+\begin{theorem}[A Sample Theorem]
+Let $f$ be a continuous function on a closed interval $[a, b]$. If $f(a)$ and $f(b)$ have opposite signs, then there exists at least one point $c \in (a, b)$ such that $f(c) = 0$.
+\end{theorem}
+
+\begin{proof}
+This is the Intermediate Value Theorem. The proof is omitted here but would typically follow a statement like this.
+\end{proof}
+
+\begin{definition}[Continuity]
+A function $g: D \to \mathbb{R}$ is continuous at a point $x_0 \in D$ if for every $\epsilon > 0$, there exists a $\delta > 0$ such that for all $x \in D$ with $|x - x_0| < \delta$, we have $|g(x) - g(x_0)| < \epsilon$.
+\end{definition}
+
+# Raw LaTeX Passthrough
+
+Use Pandoc's native `{=latex}` syntax for raw LaTeX. This is supported out of the box by Quarto/Pandoc.
+
+```{=latex}
+\begin{center}
+  \textit{This text is centered using raw \LaTeX\ commands.}
+\end{center}
+```
+
+\medskip
+
+# Code Execution
+
+The pipeline supports executing code in multiple languages.
+
+## Python Chunk
+
+This chunk uses Python to generate a plot with `matplotlib` and a table with `pandas`.
+
+```{python}
+#| label: fig-python
+#| fig-cap: "A simple plot generated with Python."
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Generate some data
+x = np.linspace(0, 10, 100)
+y = np.sin(x) * np.exp(-x / 5)
+
+# Create a plot
+plt.figure(figsize=(6, 4))
+plt.plot(x, y, label='sin(x) * exp(-x/5)')
+plt.title("Python-Generated Plot")
+plt.xlabel("X-axis")
+plt.ylabel("Y-axis")
+plt.grid(True)
+plt.legend()
+plt.show()
+
+# Create a pandas DataFrame
+df = pd.DataFrame({
+    'Category': ['A', 'B', 'C', 'D'],
+    'Value': [10, 20, 15, 25],
+    'Ratio': [0.15, 0.25, 0.20, 0.40]
+})
+
+# Print the DataFrame as a Markdown table
+print(df.to_markdown(index=False))
+```
+
+## R Chunk
+
+This chunk uses R to create a summary table from the `mtcars` dataset using `knitr::kable`.
+
+```{r}
+#| label: tbl-r
+#| tbl-cap: "A summary of the mtcars dataset from R."
+
+library(knitr)
+data(mtcars)
+
+summary_df <- head(mtcars[, 1:4])
+
+kable(summary_df, format = "pipe", caption = "First 4 columns of mtcars.")
+```
+
+# Conclusion
+
+This document successfully demonstrates all the core requirements of the specification, including custom styling, theorem environments, native raw LaTeX passthrough, and multi-language code execution.

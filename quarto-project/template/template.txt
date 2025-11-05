@@ -1,0 +1,94 @@
+% Pandoc LaTeX Template for Quarto
+%
+% Variables available:
+% --------------------
+% title, author, date, subtitle, abstract
+% toc, toc-title
+% lang
+% documentclass, classoption
+% mainfont, sansfont, monofont, mathfont
+% fontsize
+% geometry
+% linkcolor, urlcolor, citecolor
+% listings, linestretch
+% header-includes
+% body
+% --------------------
+
+\documentclass[$if(classoption)$$for(classoption)$$classoption$$sep$,$endfor$$endif$]{$if(documentclass)$$documentclass$$else$article$endif$}
+
+% -------------------------------------------------------------------
+% HEADER INCLUDES
+% -------------------------------------------------------------------
+% All preamble setup is in header.tex, included via `include-in-header`
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+% -------------------------------------------------------------------
+% PDF METADATA
+% -------------------------------------------------------------------
+\hypersetup{
+$if(title)$
+  pdftitle={$title$},
+$endif$
+$if(author)$
+  pdfauthor={$author$},
+$endif$
+$if(subject)$
+  pdfsubject={$subject$},
+$endif$
+$if(keywords)$
+  pdfkeywords={$for(keywords)$$keywords$$sep$, $endfor$},
+$endif$
+$if(pdf-creator)$
+  pdfcreator={$pdf-creator$},
+$else$
+  pdfcreator={Pandoc},
+$endif$
+$if(lang)$
+  pdflang={$lang$}
+$endif$
+}
+
+% -------------------------------------------------------------------
+% DOCUMENT START
+% -------------------------------------------------------------------
+\begin{document}
+
+% -------------------------------------------------------------------
+% TITLE BLOCK
+% -------------------------------------------------------------------
+\ifdefined\title
+  \maketitle
+\fi
+
+% -------------------------------------------------------------------
+% ABSTRACT
+% -------------------------------------------------------------------
+$if(abstract)$
+\begin{abstract}
+$abstract$
+\end{abstract}
+$endif$
+
+% -------------------------------------------------------------------
+% TABLE OF CONTENTS
+% -------------------------------------------------------------------
+$if(toc)$
+{
+  \hypersetup{linkcolor=$if(toccolor)$$toccolor$$else$$linkcolor$$endif$}
+  \setcounter{tocdepth}{$toc-depth$}
+  \tableofcontents
+}
+$endif$
+
+% -------------------------------------------------------------------
+% BODY
+% -------------------------------------------------------------------
+$body$
+
+% -------------------------------------------------------------------
+% DOCUMENT END
+% -------------------------------------------------------------------
+\end{document}

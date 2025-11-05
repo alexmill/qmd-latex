@@ -1,0 +1,19 @@
+{
+  
+  // Quarto: automatically render current .qmd to PDF on save
+  "quarto.render.onSave": "current",
+  "quarto.render.targetFormat": "pdf",
+  
+  // Watcher exclusions for generated artifacts
+  "files.watcherExclude": {
+    "**/_build/**": true,
+    "**/_freeze/**": true,
+    "**/*_files/**": true,
+    "**/*.aux": true,
+    "**/*.log": true,
+    "**/*.out": true,
+    "**/*.toc": true
+  },
+  
+  
+}

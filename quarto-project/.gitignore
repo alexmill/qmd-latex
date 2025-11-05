@@ -1,0 +1,27 @@
+# Build artifacts
+_build/
+*.pdf
+*.log
+*.aux
+*.out
+*.toc
+*.synctex.gz
+
+# Quarto/knitr cache
+.quarto/
+_freeze/
+*_cache/
+
+# Python cache
+__pycache__/
+.pytest_cache/
+.venv/
+
+# R cache
+.Rproj.user/
+.Rhistory
+.RData
+
+# OS-specific
+.DS_Store
+Thumbs.db

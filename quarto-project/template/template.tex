@@ -1,0 +1,125 @@
+% Pandoc LaTeX Template for Quarto
+%
+% Variables available:
+% --------------------
+% title, author, date, subtitle, abstract
+% toc, toc-title
+% lang
+% documentclass, classoption
+% mainfont, sansfont, monofont, mathfont
+% fontsize
+% geometry
+% linkcolor, urlcolor, citecolor
+% listings, linestretch
+% header-includes
+% body
+% --------------------
+
+\documentclass[$if(classoption)$$for(classoption)$$classoption$$sep$,$endfor$$endif$]{$if(documentclass)$$documentclass$$else$article$endif$}
+
+% -------------------------------------------------------------------
+% HEADER INCLUDES
+% -------------------------------------------------------------------
+% All preamble setup is in header.tex, included via `include-in-header`
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+% -------------------------------------------------------------------
+% Syntax highlighting macros (injected by Pandoc)
+% -------------------------------------------------------------------
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
+% -------------------------------------------------------------------
+% Pandoc compatibility macros (images, bounded boxes)
+% -------------------------------------------------------------------
+% Define max image dimensions and \pandocbounded used by Pandoc 3+
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\providecommand{\pandocbounded}[1]{#1}
+% Define compact list macro used by Pandoc when converting tight lists
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}%
+}
+
+% -------------------------------------------------------------------
+% PDF METADATA
+% -------------------------------------------------------------------
+\hypersetup{
+$if(title)$
+  pdftitle={$title$},
+$endif$
+$if(author)$
+  pdfauthor={$author$},
+$endif$
+$if(subject)$
+  pdfsubject={$subject$},
+$endif$
+$if(keywords)$
+  pdfkeywords={$for(keywords)$$keywords$$sep$, $endfor$},
+$endif$
+$if(pdf-creator)$
+  pdfcreator={$pdf-creator$},
+$else$
+  pdfcreator={Pandoc},
+$endif$
+$if(lang)$
+  pdflang={$lang$}
+$endif$
+}
+
+% -------------------------------------------------------------------
+% DOCUMENT START
+% -------------------------------------------------------------------
+\begin{document}
+
+% -------------------------------------------------------------------
+% TITLE BLOCK
+% -------------------------------------------------------------------
+$if(title)$
+\title{$title$}
+$endif$
+$if(author)$
+\author{$author$}
+$endif$
+$if(date)$
+\date{$date$}
+$endif$
+$if(title)$
+\maketitle
+$endif$
+
+% -------------------------------------------------------------------
+% ABSTRACT
+% -------------------------------------------------------------------
+$if(abstract)$
+\begin{abstract}
+$abstract$
+\end{abstract}
+$endif$
+
+% -------------------------------------------------------------------
+% TABLE OF CONTENTS
+% -------------------------------------------------------------------
+$if(toc)$
+{
+  \hypersetup{linkcolor=$if(toccolor)$$toccolor$$else$$linkcolor$$endif$}
+  \setcounter{tocdepth}{$toc-depth$}
+  \tableofcontents
+}
+$endif$
+
+% -------------------------------------------------------------------
+% BODY
+% -------------------------------------------------------------------
+$body$
+
+% -------------------------------------------------------------------
+% DOCUMENT END
+% -------------------------------------------------------------------
+\end{document}

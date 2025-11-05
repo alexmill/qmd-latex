@@ -1,0 +1,31 @@
+{
+  "name": "Quarto LaTeX Dev",
+  "build": {
+    "dockerfile": "./Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "remoteUser": "root",
+  "postCreateCommand": "quarto check --quiet || true && uv pip install --system --break-system-packages -r ./quarto-project/requirements.txt || true",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "quarto.quarto"
+      ],
+      "settings": {
+        "quarto.render.onSave": "current",
+        "quarto.render.targetFormat": "pdf",
+        "files.watcherExclude": {
+          "**/_build/**": true,
+          "**/_freeze/**": true,
+          "**/*_files/**": true,
+          "**/*.aux": true,
+          "**/*.log": true,
+          "**/*.out": true,
+          "**/*.toc": true
+        }
+      }
+    }
+  }
+}

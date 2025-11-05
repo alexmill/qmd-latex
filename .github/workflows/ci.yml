@@ -1,0 +1,55 @@
+# GitHub Actions CI Workflow for Quarto PDF Rendering
+
+name: Render Quarto PDF
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          # Pin the version for reproducibility
+          version: '1.3'
+
+      - name: Install TinyTeX and LaTeX packages
+        uses: r-lib/actions/setup-tinytex@v2
+        with:
+          # Install TinyTeX from a specific date for reproducibility
+          # See https://github.com/r-lib/actions/tree/v2/setup-tinytex
+          tinytex-version: '2023.10'
+          
+      - name: Install LaTeX dependencies
+        run: |
+          echo "Installing packages: minted, libertinus-type1, lm-math, titlesec..."
+          tlmgr install minted libertinus-type1 lm-math titlesec
+        shell: bash
+
+      - name: Install Python dependencies
+        run: |
+          pip install matplotlib pandas numpy
+
+      - name: Install R dependencies
+        run: |
+          R -e "install.packages(c('knitr'))"
+
+      - name: Render PDF document
+        run: |
+          make pdf
+        shell: bash
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: rendered-pdf
+          path: _build/examples/sample.pdf

@@ -1,0 +1,133 @@
+% ===================================================================
+% PREAMBLE FOR QUARTO -> LATEX/PDF PIPELINE
+% ===================================================================
+
+% -------------------------------------------------------------------
+% Core Packages & Document Setup
+% -------------------------------------------------------------------
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{amsmath, amssymb, amsthm}
+\else
+  % This is the path for XeLaTeX/LuaLaTeX (Quarto's default)
+  \usepackage{fontspec}
+  \usepackage{unicode-math}
+  \usepackage{amsmath, amsthm}
+  % Note: Do NOT load amssymb with unicode-math, it causes conflicts
+\fi
+\usepackage{graphicx}     % For including images
+\usepackage{booktabs}     % For professional-looking tables
+\usepackage{longtable}    % For tables that span multiple pages
+\usepackage{caption}      % For customizing captions
+\usepackage{csquotes}     % For context-sensitive quotation marks
+\usepackage[svgnames]{xcolor} % For using named colors
+
+% -------------------------------------------------------------------
+% Typography & Layout
+% -------------------------------------------------------------------
+\usepackage[a4paper, margin=1in]{geometry} % Page geometry
+\usepackage{setspace}     % For line spacing control
+\setstretch{1.15} % Default line spacing
+
+\usepackage{microtype}    % Improves typography (justification, spacing)
+\usepackage{enumitem}     % For customizing lists
+\setlist{nosep}           % Remove vertical space in lists
+
+% -------------------------------------------------------------------
+% Fonts (using variables from _quarto.yml)
+% -------------------------------------------------------------------
+\ifdefined\mainfont
+  \setmainfont{$mainfont$}[
+    Numbers={Proportional,OldStyle},
+    Ligatures=TeX
+  ]
+\fi
+\ifdefined\sansfont
+  \setsansfont{$sansfont$}[Ligatures=TeX]
+\fi
+\ifdefined\monofont
+  \setmonofont{$monofont$}[Scale=MatchLowercase]
+\fi
+\ifdefined\mathfont
+  \setmathfont{$mathfont$}
+\fi
+
+% -------------------------------------------------------------------
+% Section & Title Formatting
+% -------------------------------------------------------------------
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{}
+\titlespacing*{\section}{0pt}{1.5\baselineskip}{0.5\baselineskip}
+\titlespacing*{\subsection}{0pt}{1.2\baselineskip}{0.4\baselineskip}
+
+% -------------------------------------------------------------------
+% Theorem Environments
+% -------------------------------------------------------------------
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+% Proof environment
+\renewenvironment{proof}[1][\proofname]{\par
+  \pushQED{\qed}%
+  \normalfont \topsep6\p@\@plus6\p@\relax
+  \trivlist
+  \item[\hskip\labelsep
+        \bfseries
+    #1\@addpunct{.}]\ignorespaces
+}{%
+  \popQED\endtrivlist\@endpefalse
+}
+\providecommand{\proofname}{Proof}
+
+% -------------------------------------------------------------------
+% Code Block Styling (Pandoc highlighting only; minted removed for speed)
+% -------------------------------------------------------------------
+% Pandoc injects highlighting macros; we just ensure the supporting packages.
+\usepackage{fancyvrb}
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+% Do NOT define Shaded/Highlighting here; provided by template.
+
+% -------------------------------------------------------------------
+% Hyperlinks & PDF Bookmarks
+% -------------------------------------------------------------------
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=green,
+  urlcolor=magenta,
+  breaklinks=true,
+  bookmarksopen=true,
+  bookmarksnumbered=true,
+  pdftoolbar=true,
+  pdfmenubar=true
+}
+\usepackage{bookmark} % Improves bookmark creation
+
+% -------------------------------------------------------------------
+% Caption Styling
+% -------------------------------------------------------------------
+\captionsetup{
+  format=plain,
+  labelfont=bf,
+  singlelinecheck=false,
+  skip=8pt
+}
+
+% -------------------------------------------------------------------
+% Miscellaneous
+% -------------------------------------------------------------------
+\usepackage{amsmath} % Pandoc requires this
+\ifdefined\Shaded
+\let\Highlighting\Shaded
+\fi

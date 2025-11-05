@@ -1,0 +1,73 @@
+project:
+  type: default
+  output-dir: _build
+  render:
+    - "examples/sample.qmd"
+freeze: auto
+
+# Document-level metadata can be set here or in the .qmd file
+# title: "Sample Spec Document"
+# author: "Your Name"
+# date: "today"
+
+execute:
+  fig-format: svg
+
+format:
+  pdf:
+    # --------------------------------------------------------------------------
+    # PDF Engine & LaTeX Template
+    # --------------------------------------------------------------------------
+    pdf-engine: xelatex
+    pdf-engine-opts: []
+    template: template/template.tex
+    include-in-header:
+      - template/header.tex
+
+    # --------------------------------------------------------------------------
+    # Variables passed to the LaTeX template
+    # --------------------------------------------------------------------------
+    # These can be overridden by document metadata or CLI flags
+    documentclass: article
+    classoption: [11pt, a4paper]
+    mainfont: "Libertinus Serif"
+    mathfont: "Libertinus Math"
+    monofont: "JetBrains Mono" # Or another coding font
+    
+    # --------------------------------------------------------------------------
+    # Code Execution & Styling
+    # --------------------------------------------------------------------------
+    highlight-style: tango # Pandoc's default highlighting style
+    listings: false # Keep false; using Pandoc highlighting (no minted)
+    execute:
+      cache: true
+      echo: true
+      warning: false
+      fig-path: "figs/"
+      fig-width: 6
+      fig-height: 4
+      fig-dpi: 300
+      fig-format: pdf
+
+    # --------------------------------------------------------------------------
+    # Filters
+    # --------------------------------------------------------------------------
+    # No custom filters; rely on native Pandoc raw blocks {=latex}
+
+    # --------------------------------------------------------------------------
+    # Bibliography
+    # --------------------------------------------------------------------------
+    # bibliography: references.bib
+    # csl: chicago-author-date.csl
+
+    # --------------------------------------------------------------------------
+    # PDF Metadata
+    # --------------------------------------------------------------------------
+    pdf-creator: "Quarto via XeLaTeX"
+    pdf-keywords: "quarto, latex, pdf, template"
+
+# Engine configuration for Python and R
+jupyter: python3
+knitr:
+  opts_chunk:
+    comment: "#>"
