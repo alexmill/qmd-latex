@@ -26,6 +26,44 @@ $header-includes$
 $endfor$
 
 % -------------------------------------------------------------------
+% Font configuration via Pandoc variables
+% (template expansion happens here, unlike in header.tex)
+% -------------------------------------------------------------------
+$if(mainfont)$
+  \ifLuaTeX
+    \usepackage{fontspec}
+    \setmainfont{$mainfont$}[
+      Numbers={Proportional,OldStyle},
+      Ligatures=TeX,
+      Renderer=HarfBuzz,
+      Fallback={Noto Color Emoji}
+    ]
+  \else
+    \usepackage{fontspec}
+    \setmainfont{$mainfont$}[
+      Numbers={Proportional,OldStyle},
+      Ligatures=TeX
+    ]
+  \fi
+$endif$
+$if(sansfont)$
+  \setsansfont{$sansfont$}[Ligatures=TeX]
+$endif$
+$if(monofont)$
+  \setmonofont{$monofont$}[Scale=MatchLowercase]
+$endif$
+$if(mathfont)$
+  \ifLuaTeX
+    \usepackage{unicode-math}
+    \setmathfont{$mathfont$}
+  \else
+    % For XeLaTeX we typically load unicode-math too, but keep it minimal
+    \usepackage{unicode-math}
+    \setmathfont{$mathfont$}
+  \fi
+$endif$
+
+% -------------------------------------------------------------------
 % Syntax highlighting macros (injected by Pandoc)
 % -------------------------------------------------------------------
 $if(highlighting-macros)$

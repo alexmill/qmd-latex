@@ -1,79 +1,76 @@
 
-# A/B Testing Document Pipeline
+<div align="center">
+<h1>Quarto → LaTeX/PDF Authoring</h1>
+<strong>Minimal, reproducible pipeline for writing technical documents in Quarto and producing high‑quality PDFs with a custom LaTeX template.</strong>
+</div>
 
-This repository contains two document pipelines:
+## Quick Start (Dev Container Recommended)
 
-## 1. Legacy R/LaTeX Pipeline (main.Rtex)
+1. Clone:
+	```bash
+	git clone https://github.com/alexmill/qmd-latex.git
+	cd qmd-latex
+	```
+2. Open the folder in VS Code. When prompted, choose: Reopen in Container (or run from the Command Palette: "Dev Containers: Reopen in Container").
+3. Wait for build (installs Quarto, TinyTeX, Python, R; extensions: Quarto + Python).  
+4. Open or create a `.qmd` under `document/` (e.g. `document/mwe.qmd`).
+5. Save the file. It auto-renders to PDF (thanks to workspace settings). Output goes into `_build/` preserving relative paths (e.g. `_build/document/mwe.pdf`).
+6. View the PDF either via the Quarto sidebar, file explorer, or external viewer.
 
-### Build image
+## Editing & Dependencies
+
+| Task | Where | Notes |
+|------|-------|-------|
+| Add Python libs | `document/requirements.txt` | On change: rebuild container or run install command below |
+| Add R packages | dev container terminal | Install via `R -e "install.packages('pkg')"` |
+| Adjust LaTeX styling | `document/template/header.tex` & `document/template/template.tex` | Header: packages & macros; Template: structure |
+| Project-wide defaults | `document/_quarto.yml` | Output dir, fonts, engine, render targets |
+| Example source | `document/examples/sample.qmd` | Demonstrates features |
+
+Install updated Python deps inside the running container:
 ```bash
-docker build -t ab .
+uv pip install --system --break-system-packages -r document/requirements.txt
 ```
 
-### Run container
+## Manual Rendering (Optional)
+
+Inside container:
 ```bash
-docker run -v $(pwd):/home/document -it ab bash
+quarto render document/mwe.qmd --to pdf
+```
+Using the Makefile conveniences (renders sample):
+```bash
+make -C document pdf   # builds examples/sample.qmd → _build/examples/sample.pdf
 ```
 
-### Compile document
-```bash
-docker run --rm -v $(pwd):/home/document ab bash -c "Rscript -e \"knitr::knit2pdf('main.Rtex')\""
+## Auto-Render Behavior
+
+Configured in `.devcontainer/devcontainer.json` and `.vscode/settings.json`:
+```jsonc
+"quarto.render.onSave": "current",
+"quarto.render.targetFormat": "pdf"
 ```
+So every save of the active `.qmd` triggers a PDF build via the Quarto extension. For portability the same settings are checked into the repo.
+
+## Updating Tooling
+
+- Rebuild container after major changes to `devcontainer.json` or system dependencies: Command Palette → "Dev Containers: Rebuild Container".
+- If LaTeX complains about missing packages, install with `tlmgr install <pkg>` (auto-install is disabled for reproducibility). For emoji output ensure the apt package `fonts-noto-color-emoji` is installed (it is in the dev container) and use `\emoji{😀}` in your `.qmd`; if the font is missing the glyph falls back gracefully.
+
+## Legacy Pipeline (Optional / Deprecated)
+
+The older R/LaTeX `.Rtex` workflow remains (file `main.Rtex`) but Quarto is the recommended path. You can safely ignore it unless migrating old sources.
+
+## Troubleshooting
+
+- No auto-render? Ensure the Quarto extension is installed; reopen folder in container; check Settings for the two Quarto keys above.
+- Font errors (`fontspec`): confirm fonts specified in `_quarto.yml` exist. Libertinus now comes via TeX Live (`tlmgr install libertinus`) rather than a system apt font package.
+- Python import errors: add package to `document/requirements.txt`, reinstall with `uv pip install ...`.
+- R chunk failures: ensure required R packages are installed in the container.
+
+## See Also
+
+Detailed feature documentation lives in `document/README.md`.
 
 ---
-
-## 2. Quarto → LaTeX/PDF Pipeline (quarto-project/)
-
-This is the recommended modern pipeline using Quarto with TinyTeX.
-
-### Build the Quarto Docker image
-```bash
-docker build -f Dockerfile.quarto -t ab-quarto .
-```
-
-### Run the container interactively
-```bash
-docker run -v $(pwd):/home/document -it ab-quarto bash
-```
-
-Inside the container, you can then run:
-```bash
-cd quarto-project
-make pdf
-# or
-quarto render examples/sample.qmd
-```
-
-### One-line render (without entering container)
-```bash
-docker run --rm -v $(pwd):/home/document ab-quarto bash -c "cd /home/document && make -C quarto-project pdf"
-```
-
-### Render the minimal working example
-```bash
-docker run --rm -v $(pwd):/home/document ab-quarto bash -c "cd /home/document && quarto render quarto-project/mwe.qmd --to pdf"
-```
-
-### Open in VS Code Dev Container (auto-render on save)
-
-This repo includes a `.devcontainer` configuration. When you open the folder in VS Code and choose "Reopen in Container", it will:
-
-- Provision Quarto, TinyTeX, Python, and R in the container
-- Install the VS Code extensions: Quarto and Python
-- Automatically render the current `.qmd` to PDF on save using the Quarto extension
-
-Notes:
-- On save, the Quarto extension runs `quarto render <current-file> --to pdf` inside the container.
-- Rendering is handled by the Quarto extension
-- Generated artifacts like `_build/`, `_freeze/`, and `*_files/` are excluded from file watching for performance.
-
-### What's included in the Quarto pipeline:
-- **Quarto CLI**: Markdown → LaTeX → PDF rendering
-- **TinyTeX**: Lightweight LaTeX distribution with xelatex
-- **Python support**: Execute Python code chunks (pandas, matplotlib, numpy)
-- **R support**: Execute R code chunks (knitr)
-- **Custom LaTeX**: Full control via templates and raw LaTeX passthrough
-- **Minted**: Syntax highlighting for code blocks
-- **Custom fonts**: Libertinus Serif, Libertinus Math
-
-See `quarto-project/README.md` for detailed documentation.
+Enjoy writing! Save often; the PDF will always be fresh.

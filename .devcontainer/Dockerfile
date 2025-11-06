@@ -10,6 +10,8 @@ RUN apt-get update \
                 wget \
                 curl \
                 ca-certificates \
+                fontconfig \
+                fonts-noto-color-emoji \
                 python3 \
                 python3-pip \
                 git \
@@ -43,6 +45,7 @@ ENV PATH="/root/.TinyTeX/bin/x86_64-linux:/root/.TinyTeX/bin/aarch64-linux:${PAT
 # Preinstall LaTeX packages used by the template (minted omitted)
 RUN /root/.TinyTeX/bin/*/tlmgr install \
         fontspec \
+        libertinus \
         unicode-math \
         titlesec \
         geometry \
@@ -55,7 +58,6 @@ RUN /root/.TinyTeX/bin/*/tlmgr install \
         xcolor \
         hyperref \
         bookmark \
-        libertinus-type1 \
         lm-math \
         upquote \
         framed \

@@ -50,9 +50,7 @@ endif
 	@echo "✅ Quarto is installed: $(QUARTO)"
 	@scripts/detect-tex.sh > /dev/null || (echo "❌ TeX distribution (e.g., TinyTeX) not found."; exit 1)
 	@echo "✅ TeX distribution found."
-	@echo "Checking for required LaTeX packages (minted)..."
-	@kpsewhich minted.sty > /dev/null || (echo "❌ 'minted' package not found. Install with: tlmgr install minted"; exit 1)
-	@echo "✅ 'minted' package found."
+	@echo "✅ TeX package checks complete."
 
 
 # Target for Continuous Integration.

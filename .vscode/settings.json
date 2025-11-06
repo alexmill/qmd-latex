@@ -14,6 +14,7 @@
     "**/*.out": true,
     "**/*.toc": true
   },
+  "quarto.render.renderOnSave": true,
   
   
 }

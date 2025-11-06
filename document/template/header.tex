@@ -36,23 +36,25 @@
 \setlist{nosep}           % Remove vertical space in lists
 
 % -------------------------------------------------------------------
-% Fonts (using variables from _quarto.yml)
+% Fonts are configured via Pandoc variables in the main template.
+% This header intentionally avoids referencing $...$ variables directly,
+% since include-in-header is not a template expansion context.
+
 % -------------------------------------------------------------------
-\ifdefined\mainfont
-  \setmainfont{$mainfont$}[
-    Numbers={Proportional,OldStyle},
-    Ligatures=TeX
-  ]
+% Emoji Support (define regardless of main font presence)
+% -------------------------------------------------------------------
+% Provide an explicit emoji font and a macro to force its use when needed.
+% (Font defined only if compiling with LuaLaTeX/XeLaTeX and font available.)
+\ifLuaTeX
+  % Define an emoji font if available on the system; use HarfBuzz renderer for color fonts
+  \IfFontExistsTF{Noto Color Emoji}{%
+    \newfontfamily\EmojiFont{Noto Color Emoji}[Renderer=HarfBuzz,Scale=MatchLowercase]
+  }{%
+    \newcommand{\EmojiFont}{}
+  }
 \fi
-\ifdefined\sansfont
-  \setsansfont{$sansfont$}[Ligatures=TeX]
-\fi
-\ifdefined\monofont
-  \setmonofont{$monofont$}[Scale=MatchLowercase]
-\fi
-\ifdefined\mathfont
-  \setmathfont{$mathfont$}
-\fi
+% Use as: \emoji{🙂}; without the font, this degrades gracefully
+\providecommand{\emoji}[1]{{\EmojiFont #1}}
 
 % -------------------------------------------------------------------
 % Section & Title Formatting

@@ -9,7 +9,6 @@ format:
     template: template/template.tex
     include-in-header: template/header.tex
     documentclass: article
-    mainfont: "Libertinus Serif"
     code-block-bg: false
     listings: false
 ---
@@ -19,18 +18,27 @@ format:
 This is a minimal working example demonstrating the Quarto → LaTeX/PDF pipeline.
 
 # Python Code Execution
+Below are three common code visibility/output patterns. A short setup cell defines shared data.
 
-Here's a simple Python code chunk that creates data and a plot:
 
 ```{python}
-import matplotlib.pyplot as plt
+#| label: setup
+#| echo: false
+#| include: false
 import numpy as np
+import matplotlib.pyplot as plt
 
-# Generate data
 x = np.linspace(0, 2*np.pi, 100)
 y = np.sin(x)
+```
 
-# Create plot
+
+
+## Shown code with output
+The code is visible and its outputs (text and figures) are shown.
+
+```{python}
+#| label: shown-code-with-output
 plt.figure(figsize=(6, 3))
 plt.plot(x, y, 'b-', linewidth=2)
 plt.title('Sine Wave')
@@ -40,9 +48,44 @@ plt.grid(True, alpha=0.3)
 plt.tight_layout()
 plt.show()
 
-# Print some output
 print(f"Maximum value: {y.max():.3f}")
 print(f"Minimum value: {y.min():.3f}")
+```
+
+## Hidden code with output
+The code is hidden (echo: false) but its outputs are still shown.
+
+```{python}
+#| label: hidden-code-with-output
+#| echo: false
+plt.figure(figsize=(6, 3))
+plt.plot(x, np.cos(x), 'r--', linewidth=2)
+plt.title('Cosine Wave')
+plt.xlabel('x')
+plt.ylabel('cos(x)')
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+print(f"Mean of cos(x): {np.cos(x).mean():.3f}")
+```
+
+## Shown code, no output
+The code is visible but both printed output and figures are suppressed.
+
+```{python}
+#| label: shown-code-no-output
+#| output: false
+#| fig-show: hide
+plt.figure(figsize=(6, 3))
+plt.plot(x, y**2, 'g-', linewidth=2)
+plt.title('Sine Squared (suppressed display)')
+plt.xlabel('x')
+plt.ylabel('sin(x)^2')
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+print("This line is hidden in the output, but the code is shown.")
 ```
 
 # Raw LaTeX Passthrough
@@ -56,6 +99,8 @@ Using the `{=latex}` raw block:
 \textbf{This is raw \LaTeX\ using native Pandoc syntax}
 \end{center}
 ```
+
+
 
 ## Example Theorem (native)
 
@@ -77,12 +122,15 @@ $$
 \int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
 $$
 
+
 # Conclusion
+
 
 This MWE demonstrates:
 
-- ✓ Python code execution with matplotlib
-- ✓ Raw LaTeX passthrough (both methods)
+- Python code execution with matplotlib
+-  Raw LaTeX passthrough (both methods)
 - ✓ Custom theorem environments
 - ✓ Mathematical typesetting
 - ✓ Custom fonts and styling
+

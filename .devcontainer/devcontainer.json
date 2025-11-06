@@ -6,7 +6,7 @@
   },
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "remoteUser": "root",
-  "postCreateCommand": "quarto check --quiet || true && uv pip install --system --break-system-packages -r ./quarto-project/requirements.txt || true",
+  "postCreateCommand": "quarto check --quiet || true && uv pip install --system --break-system-packages -r ./document/requirements.txt || true",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -16,6 +16,7 @@
       "settings": {
         "quarto.render.onSave": "current",
         "quarto.render.targetFormat": "pdf",
+        "quarto.path": "/usr/bin/quarto",
         "files.watcherExclude": {
           "**/_build/**": true,
           "**/_freeze/**": true,
